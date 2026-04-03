@@ -1,0 +1,152 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2026-04-03 16:06:01.218292",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "basic_details_section",
+  "date",
+  "column_break_dkgg",
+  "sales_person",
+  "section_break_fhdx",
+  "customer",
+  "location",
+  "visit_details_section",
+  "check_in",
+  "column_break_rwkb",
+  "check_out",
+  "column_break_pytq",
+  "status",
+  "time_tracking_section",
+  "time_spend",
+  "column_break_arrv",
+  "travel_time",
+  "additional_details_section",
+  "notes"
+ ],
+ "fields": [
+  {
+   "fieldname": "basic_details_section",
+   "fieldtype": "Section Break",
+   "label": "Basic Details"
+  },
+  {
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "label": "Date"
+  },
+  {
+   "fieldname": "column_break_dkgg",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "sales_person",
+   "fieldtype": "Link",
+   "label": "Sales Person",
+   "options": "Employee"
+  },
+  {
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "label": "Customer",
+   "options": "Employee"
+  },
+  {
+   "fetch_from": "customer.permanent_address",
+   "fieldname": "location",
+   "fieldtype": "Small Text",
+   "label": "Location",
+   "read_only": 1
+  },
+  {
+   "fieldname": "visit_details_section",
+   "fieldtype": "Section Break",
+   "label": "Visit Details",
+   "options": "\nPlanned\nVisited\nCompleted\nCancelled"
+  },
+  {
+   "fieldname": "check_in",
+   "fieldtype": "Datetime",
+   "label": "Check In"
+  },
+  {
+   "fieldname": "column_break_rwkb",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "check_out",
+   "fieldtype": "Datetime",
+   "label": "Check out"
+  },
+  {
+   "fieldname": "column_break_pytq",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status"
+  },
+  {
+   "fieldname": "time_tracking_section",
+   "fieldtype": "Section Break",
+   "label": "Time Tracking"
+  },
+  {
+   "fieldname": "time_spend",
+   "fieldtype": "Float",
+   "label": "Time Spend"
+  },
+  {
+   "fieldname": "column_break_arrv",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "travel_time",
+   "fieldtype": "Float",
+   "label": "Travel Time"
+  },
+  {
+   "fieldname": "additional_details_section",
+   "fieldtype": "Section Break",
+   "label": "Additional Details"
+  },
+  {
+   "fieldname": "notes",
+   "fieldtype": "Small Text",
+   "label": "Notes"
+  },
+  {
+   "fieldname": "section_break_fhdx",
+   "fieldtype": "Section Break"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-04-03 16:44:07.950102",
+ "modified_by": "Administrator",
+ "module": "Time Tracking System",
+ "name": "Sales Visit",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
