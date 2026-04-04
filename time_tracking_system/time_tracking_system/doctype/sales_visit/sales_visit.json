@@ -1,6 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
+ "autoname": "SV-.#####",
  "creation": "2026-04-03 16:06:01.218292",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -11,15 +12,25 @@
   "sales_person",
   "section_break_fhdx",
   "customer",
-  "location",
+  "address",
+  "lattitude",
+  "longitude",
+  "column_break_zdbr",
+  "scheduled_date",
+  "map",
+  "section_break_otxk",
+  "purpose",
   "visit_details_section",
   "check_in",
+  "check_in_coordinates",
   "column_break_rwkb",
   "check_out",
+  "check_out_coordinates",
   "column_break_pytq",
   "status",
+  "travel_start_time",
   "time_tracking_section",
-  "time_spend",
+  "time_spent",
   "column_break_arrv",
   "travel_time",
   "additional_details_section",
@@ -34,7 +45,8 @@
   {
    "fieldname": "date",
    "fieldtype": "Date",
-   "label": "Date"
+   "label": "Date",
+   "read_only": 1
   },
   {
    "fieldname": "column_break_dkgg",
@@ -44,20 +56,15 @@
    "fieldname": "sales_person",
    "fieldtype": "Link",
    "label": "Sales Person",
-   "options": "Employee"
+   "link_filters": "[[\"User\",\"role\",\"=\",\"Sales User\"]]",
+   "options": "User",
+   "read_only": 1
   },
   {
    "fieldname": "customer",
    "fieldtype": "Link",
    "label": "Customer",
-   "options": "Employee"
-  },
-  {
-   "fetch_from": "customer.permanent_address",
-   "fieldname": "location",
-   "fieldtype": "Small Text",
-   "label": "Location",
-   "read_only": 1
+   "options": "Customer"
   },
   {
    "fieldname": "visit_details_section",
@@ -86,17 +93,14 @@
   {
    "fieldname": "status",
    "fieldtype": "Select",
-   "label": "Status"
+   "label": "Status",
+   "options": "Scheduled\nTraveling\nIn Progress\nCompleted\nPending\nCancelled",
+   "read_only": 1
   },
   {
    "fieldname": "time_tracking_section",
    "fieldtype": "Section Break",
    "label": "Time Tracking"
-  },
-  {
-   "fieldname": "time_spend",
-   "fieldtype": "Float",
-   "label": "Time Spend"
   },
   {
    "fieldname": "column_break_arrv",
@@ -105,7 +109,8 @@
   {
    "fieldname": "travel_time",
    "fieldtype": "Float",
-   "label": "Travel Time"
+   "label": "Travel Time",
+   "read_only": 1
   },
   {
    "fieldname": "additional_details_section",
@@ -119,16 +124,79 @@
   },
   {
    "fieldname": "section_break_fhdx",
+   "fieldtype": "Section Break",
+   "label": "Customer Details"
+  },
+  {
+   "fieldname": "scheduled_date",
+   "fieldtype": "Date",
+   "label": "Scheduled Date"
+  },
+  {
+   "fieldname": "lattitude",
+   "fieldtype": "Float",
+   "label": "Lattitude"
+  },
+  {
+   "fieldname": "longitude",
+   "fieldtype": "Float",
+   "label": "Longitude"
+  },
+  {
+   "fieldname": "column_break_zdbr",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "customer.primary_address",
+   "fieldname": "address",
+   "fieldtype": "Small Text",
+   "label": "Address",
+   "read_only": 1
+  },
+  {
+   "fieldname": "map",
+   "fieldtype": "Geolocation",
+   "label": "Map"
+  },
+  {
+   "fieldname": "check_in_coordinates",
+   "fieldtype": "Data",
+   "label": "Check In Coordinates"
+  },
+  {
+   "fieldname": "check_out_coordinates",
+   "fieldtype": "Data",
+   "label": "Check Out Coordinates"
+  },
+  {
+   "fieldname": "travel_start_time",
+   "fieldtype": "Datetime",
+   "label": "Travel Start Time"
+  },
+  {
+   "fieldname": "time_spent",
+   "fieldtype": "Float",
+   "label": "Time Spent",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_otxk",
    "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "purpose",
+   "fieldtype": "Small Text",
+   "label": "Purpose"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-04-03 16:44:07.950102",
+ "modified": "2026-04-04 22:50:29.668062",
  "modified_by": "Administrator",
  "module": "Time Tracking System",
  "name": "Sales Visit",
+ "naming_rule": "Expression",
  "owner": "Administrator",
  "permissions": [
   {
