@@ -44,7 +44,7 @@ app_license = "mit"
 
 # include js in doctype views
 # doctype_js = {"doctype" : "public/js/doctype.js"}
-# doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
+doctype_list_js = {"Customer" : "public/js/customer_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
 
@@ -148,13 +148,13 @@ app_license = "mit"
 # Scheduled Tasks
 # ---------------
 
-# scheduler_events = {
+scheduler_events = {
 # 	"all": [
 # 		"time_tracking_system.tasks.all"
 # 	],
-# 	"daily": [
-# 		"time_tracking_system.tasks.daily"
-# 	],
+	"daily": [
+		"time_tracking_system.api.check_and_update_pending_visits"
+	],
 # 	"hourly": [
 # 		"time_tracking_system.tasks.hourly"
 # 	],
@@ -164,7 +164,7 @@ app_license = "mit"
 # 	"monthly": [
 # 		"time_tracking_system.tasks.monthly"
 # 	],
-# }
+}
 
 # Testing
 # -------
