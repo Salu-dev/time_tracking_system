@@ -1,22 +1,23 @@
 import frappe
 import json
 from frappe.share import add as add_share
-
-@frappe.whitelist()
-def get_user_details():
-    return frappe.session.user
+from time_tracking_system.utils import get_user_details
 
 # get assigned customers for current sales person
 @frappe.whitelist()
 def get_assigned_customers():
-    if frappe.session.user == "Administrator" or frappe.user.has_role("Sales Manager"):
+    user_details = get_user_details()
+    user_roles = user_details.get("roles")
+    if frappe.session.user == "Administrator" or "Sales Manager" in user_roles:
         customer_list = frappe.get_all("Customer",  
         fields=["customer_name","customer_primary_address.email_id","customer_primary_address.phone"])
     else:
-        customer_list = frappe.get_all("Customer", filters={"custom_assigned_sales_user": frappe.session.user}, 
-        fields=["customer_name","customer_primary_address.email_id","customer_primary_address.phone"])
-   
-    print(customer_list)     
+        if "Sales User" in user_roles:
+            customer_list = frappe.get_all("Customer", filters={"custom_assigned_sales_user": frappe.session.user}, 
+            fields=["customer_name","customer_primary_address.email_id","customer_primary_address.phone"])
+        else:
+            customer_list = []
+      
     return customer_list
 
 @frappe.whitelist()
@@ -112,7 +113,7 @@ def get_sales_visits_history():
 
         visits = frappe.get_list("Sales Visit", filters=visit_filter, 
         fields=["name", "customer", "scheduled_date", "status","time_spend","travel_time"],
-        order_by="scheduled_date DESC")
+        order_by="creation DESC")
         count=len(visits)
         limited_visits = visits[limit_start:limit_start+limit] 
         return {"visits": limited_visits, "count": count}
@@ -127,6 +128,12 @@ def check_in_visit(visit_name,latitude,longitude):
     """
     try:
         visit = frappe.get_doc("Sales Visit", visit_name)
+        
+        # Validate that only assigned sales person can check in
+        if frappe.session.user not in ["Administrator", "System Manager"]:
+            if visit.sales_person != frappe.session.user:
+                frappe.throw("Only the assigned sales person can check in for this visit")
+        
         visit.status = "In Progress"
         visit.check_in_coordinates = f"{latitude},{longitude}"
         visit.save(ignore_permissions=True)
@@ -142,6 +149,12 @@ def check_out_visit(visit_name,latitude,longitude):
     """
     try:
         visit = frappe.get_doc("Sales Visit", visit_name)
+        
+        # Validate that only assigned sales person can check out
+        if frappe.session.user not in ["Administrator", "System Manager"]:
+            if visit.sales_person != frappe.session.user:
+                frappe.throw("Only the assigned sales person can check out for this visit")
+        
         visit.status = "Completed"
         visit.check_out_coordinates = f"{latitude},{longitude}"
         visit.save(ignore_permissions=True)
@@ -158,6 +171,12 @@ def start_visit(visit_name,travel_start_time):
     """
     try:
         visit = frappe.get_doc("Sales Visit", visit_name)
+        
+        # Validate that only assigned sales person can start visit
+        if frappe.session.user not in ["Administrator", "System Manager"]:
+            if visit.sales_person != frappe.session.user:
+                frappe.throw("Only the assigned sales person can start this visit")
+        
         visit.status = "Traveling"
         visit.travel_start_time = travel_start_time
         visit.save(ignore_permissions=True)
