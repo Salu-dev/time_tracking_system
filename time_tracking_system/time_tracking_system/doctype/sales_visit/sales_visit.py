@@ -38,20 +38,22 @@ class SalesVisit(Document):
 		if self.check_in and self.scheduled_date and (self.is_new() or self.has_value_changed("check_in") or self.has_value_changed("scheduled_date")):
 			if not self.travel_start_time:
 				frappe.throw("Travel start time is required when check in is set")
-
-			if self.check_in < self.scheduled_date:
+			
+			check_in_date = frappe.utils.getdate(self.check_in)
+			scheduled_date = frappe.utils.getdate(self.scheduled_date)
+			if check_in_date < scheduled_date:
 				frappe.throw("Check-in date cannot be before scheduled date")
 		
 		# Validate check-out is not before check-in
 		if self.check_out and self.check_in and (self.is_new() or self.has_value_changed("check_out")):
-			if self.check_out < self.check_in:
-				frappe.throw("Check-out date cannot be before check-in date")
+			if frappe.utils.get_datetime(self.check_out) < frappe.utils.get_datetime(self.check_in):
+				frappe.throw("Check-out time cannot be before check-in time")
 		
 
 		# Validate travel start time logic
 		if self.travel_start_time:
-			if self.check_in and self.travel_start_time > self.check_in:
-				frappe.throw("Travel start date cannot be after check-in date")
+			if self.check_in and frappe.utils.get_datetime(self.travel_start_time) > frappe.utils.get_datetime(self.check_in):
+				frappe.throw("Travel start time cannot be after check-in time")
 			elif self.scheduled_date:
 				travel_date = frappe.utils.getdate(self.travel_start_time)
 				scheduled_date = frappe.utils.getdate(self.scheduled_date)
@@ -63,11 +65,10 @@ class SalesVisit(Document):
 		old_doc = self.get_doc_before_save()
 		if old_doc and old_doc.status != self.status:
 			if self.status == "In Progress":
-				self.check_in = frappe.utils.now()
+				self.check_in = frappe.utils.now_datetime()
 				if self.travel_start_time:
 					self.travel_time = frappe.utils.time_diff_in_hours(self.check_in, self.travel_start_time)
 			elif self.status == "Completed":
-				self.check_out = frappe.utils.now()
 				self.time_spent = frappe.utils.time_diff_in_hours(self.check_out, self.check_in)
 		if old_doc and (old_doc.customer != self.customer or old_doc.address != self.address):
 			customer_location = get_customer_location(self.customer)

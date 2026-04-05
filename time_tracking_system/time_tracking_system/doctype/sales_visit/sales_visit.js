@@ -10,7 +10,7 @@ frappe.ui.form.on("Sales Visit", {
     add_mark_updates_button(frm) {
 
         // add check in button
-        if (frm.doc.status=="Scheduled") {
+        if (frm.doc.status=="Scheduled" || frm.doc.status=="Traveling") {
             if (!frm.doc.travel_start_time) {
                 frm.add_custom_button("Set Travel Start Time", () => {
                     frm.doc.travel_start_time = frappe.datetime.now_datetime();
