@@ -170,6 +170,7 @@ def check_out_visit():
         if check_out_time:
             formatted_check_out_time = format_datetime(check_out_time)
         visit.status = "Completed"
+        visit.check_out = formatted_check_out_time
         visit.check_out_coordinates = f"{latitude},{longitude}"
         visit.save(ignore_permissions=True)
         return "Visit checked out successfully"

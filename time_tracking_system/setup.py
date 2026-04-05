@@ -94,7 +94,7 @@ def create_addresses():
                 "state": a["state"],
                 "pincode": a["pincode"],
                 "country": "United States",
-                "custom_latitude": a["lat"],   
+                "custom_lattitude": a["lat"],   
                 "custom_longitude": a["lng"],
                 "links": [
                     {

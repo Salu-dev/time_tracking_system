@@ -83,7 +83,7 @@ doctype_list_js = {"Customer" : "public/js/customer_list.js"}
 # ------------
 
 # before_install = "time_tracking_system.install.before_install"
-after_migrate = "time_tracking_system.install.after_migrate"
+after_migrate = "time_tracking_system.setup.after_migrate"
 
 # Uninstallation
 # ------------

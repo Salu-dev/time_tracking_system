@@ -11,7 +11,7 @@ class SalesVisit(Document):
 		if self.customer:
 			customer_location = get_customer_details(self.customer)
 			if customer_location:
-				self.lattitude = customer_location.custom_lttitude
+				self.lattitude = customer_location.custom_lattitude
 				self.longitude = customer_location.custom_longitude
 			self.sales_person = get_assigned_sales_person(self.customer)
 		
@@ -72,7 +72,7 @@ class SalesVisit(Document):
 		if old_doc and (old_doc.customer != self.customer or old_doc.address != self.address):
 			customer_location = get_customer_location(self.customer)
 			if customer_location:
-				self.lattitude = customer_location.custom_lttitude
+				self.lattitude = customer_location.custom_lattitude
 				self.longitude = customer_location.custom_longitude
 		
 		# check duplicate schedule 
