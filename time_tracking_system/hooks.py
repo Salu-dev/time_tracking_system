@@ -153,7 +153,7 @@ scheduler_events = {
 # 		"time_tracking_system.tasks.all"
 # 	],
 	"daily": [
-		"time_tracking_system.api.check_and_update_pending_visits"
+		"time_tracking_system.time_tracking_system.doctype.sales_visit.sales_visit.check_and_update_pending_visits"
 	],
 # 	"hourly": [
 # 		"time_tracking_system.tasks.hourly"
