@@ -253,5 +253,28 @@ fixtures = [
         "filters": [
             ["parent", "=", "Sales Visit"]
         ]
-    }
+    },
+	
+    {
+        "doctype": "Customer",
+        "filters": [
+            ["name", "in", [
+                "GreenLeaf Traders",
+                "Sunrise Retailers",
+                "BlueWave Solutions"
+            ]]
+        ]
+    },
+    {
+        "doctype": "Address",
+        "filters": [
+            ["address_title", "in", [
+                "GreenLeaf Traders",
+                "Sunrise Retailers",
+                "BlueWave Solutions"
+            ]]
+        ]
+    },
+
+
 ]
