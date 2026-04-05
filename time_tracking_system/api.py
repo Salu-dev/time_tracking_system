@@ -167,3 +167,17 @@ def start_visit(visit_name,travel_start_time):
         return f"Error starting visit: {str(e)}"
     
 
+@frappe.whitelist()
+def check_and_update_pending_visits():
+    """
+    Check and update pending visits.
+    """
+    try:
+        visits = frappe.get_all("Sales Visit", filters={"status": "Scheduled","scheduled_date": ["<", frappe.utils.nowdate()]}, fields=["name", "scheduled_date"])
+        for visit in visits:
+            frappe.db.set_value("Sales Visit", visit.name, "status", "Pending")
+        return "Pending visits checked and updated successfully"
+    except Exception as e:
+        frappe.log_error(f"Error checking and updating pending visits: {str(e)}", "Check and Update Pending Visits Error")
+        return f"Error checking and updating pending visits: {str(e)}"
+    
