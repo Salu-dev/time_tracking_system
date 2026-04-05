@@ -10,11 +10,11 @@ def get_assigned_customers():
     user_roles = user_details.get("roles")
     if frappe.session.user == "Administrator" or "Sales Manager" in user_roles:
         customer_list = frappe.get_all("Customer",  
-        fields=["customer_name","customer_primary_address.email_id","customer_primary_address.phone"])
+        fields=["customer_name","customer_primary_address.email_id","customer_primary_address.phone","customer_type"])
     else:
         if "Sales User" in user_roles:
             customer_list = frappe.get_all("Customer", filters={"custom_assigned_sales_user": frappe.session.user}, 
-            fields=["customer_name","customer_primary_address.email_id","customer_primary_address.phone"])
+            fields=["customer_name","customer_primary_address.email_id","customer_primary_address.phone","customer_type"])
         else:
             customer_list = []
       

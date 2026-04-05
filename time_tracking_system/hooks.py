@@ -83,7 +83,7 @@ doctype_list_js = {"Customer" : "public/js/customer_list.js"}
 # ------------
 
 # before_install = "time_tracking_system.install.before_install"
-after_install = "time_tracking_system.install.after_install"
+after_migrate = "time_tracking_system.install.after_migrate"
 
 # Uninstallation
 # ------------
@@ -153,7 +153,7 @@ scheduler_events = {
 # 		"time_tracking_system.tasks.all"
 # 	],
 	"daily": [
-		# "time_tracking_system.time_tracking_system.doctype.sales_visit.sales_visit.check_and_update_pending_visits"
+		"time_tracking_system.time_tracking_system.doctype.sales_visit.sales_visit.check_and_update_pending_visits"
 	],
 # 	"hourly": [
 # 		"time_tracking_system.tasks.hourly"
@@ -253,28 +253,6 @@ fixtures = [
         "filters": [
             ["parent", "=", "Sales Visit"]
         ]
-    },
-	
-    {
-        "doctype": "Customer",
-        "filters": [
-            ["name", "in", [
-                "GreenLeaf Traders",
-                "Sunrise Retailers",
-                "BlueWave Solutions"
-            ]]
-        ]
-    },
-    {
-        "doctype": "Address",
-        "filters": [
-            ["address_title", "in", [
-                "GreenLeaf Traders",
-                "Sunrise Retailers",
-                "BlueWave Solutions"
-            ]]
-        ]
-    },
-
+    }
 
 ]
