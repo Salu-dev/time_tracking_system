@@ -81,7 +81,7 @@ def get_todays_scheduled_visits():
     """
     try:
         today = frappe.utils.nowdate()
-        today_visits = frappe.get_all("Sales Visit", filters={"scheduled_date": today,"status":"Scheduled"}, 
+        today_visits = frappe.get_list("Sales Visit", filters={"scheduled_date": today,"status":"Scheduled"}, 
         fields=["name", "customer", "scheduled_date", "status","sales_person"])
         return today_visits
         
@@ -112,7 +112,7 @@ def get_sales_visits_history():
             visit_filter.append(["customer","=",customer])
 
         visits = frappe.get_list("Sales Visit", filters=visit_filter, 
-        fields=["name", "customer", "scheduled_date", "status","time_spend","travel_time"],
+        fields=["name", "customer", "scheduled_date", "status","time_spent","travel_time","sales_person"],
         order_by="creation DESC")
         count=len(visits)
         limited_visits = visits[limit_start:limit_start+limit] 
@@ -122,11 +122,18 @@ def get_sales_visits_history():
         return "Error getting scheduled visits"
 
 @frappe.whitelist()
-def check_in_visit(visit_name,latitude,longitude):
+def check_in_visit():
     """
     Check in for a specific visit.
     """
     try:
+        data=frappe.form_dict
+        visit_name=data.get("visit_name")
+        latitude=data.get("latitude")
+        longitude=data.get("longitude")
+        check_in_time=data.get("check_in_time")
+        if check_in_time :
+            formatted_check_in_time = format_datetime(check_in_time)
         visit = frappe.get_doc("Sales Visit", visit_name)
         
         # Validate that only assigned sales person can check in
@@ -136,6 +143,7 @@ def check_in_visit(visit_name,latitude,longitude):
         
         visit.status = "In Progress"
         visit.check_in_coordinates = f"{latitude},{longitude}"
+        visit.check_in = formatted_check_in_time
         visit.save(ignore_permissions=True)
         return "Visit checked in successfully"
     except Exception as e:
@@ -143,24 +151,31 @@ def check_in_visit(visit_name,latitude,longitude):
         return f"Error checking in visit: {str(e)}"
 
 @frappe.whitelist()
-def check_out_visit(visit_name,latitude,longitude):
+def check_out_visit():
     """
     Check out for a specific visit.
     """
     try:
+        data = frappe.form_dict
+        visit_name = data.get("visit_name")
+        latitude = data.get("latitude")
+        longitude = data.get("longitude")
+        check_out_time = data.get("check_out_time")
         visit = frappe.get_doc("Sales Visit", visit_name)
         
         # Validate that only assigned sales person can check out
         if frappe.session.user not in ["Administrator", "System Manager"]:
             if visit.sales_person != frappe.session.user:
                 frappe.throw("Only the assigned sales person can check out for this visit")
-        
+        if check_out_time:
+            formatted_check_out_time = format_datetime(check_out_time)
         visit.status = "Completed"
         visit.check_out_coordinates = f"{latitude},{longitude}"
         visit.save(ignore_permissions=True)
         return "Visit checked out successfully"
     except Exception as e:
         frappe.log_error(f"Error checking out visit: {str(e)}", "Check Out Visit Error")
+        print(f"Error checking out visit: {str(e)}")
         return f"Error checking out visit: {str(e)}"
 
 
@@ -173,12 +188,16 @@ def start_visit(visit_name,travel_start_time):
         visit = frappe.get_doc("Sales Visit", visit_name)
         
         # Validate that only assigned sales person can start visit
-        if frappe.session.user not in ["Administrator", "System Manager"]:
+        if frappe.session.user not in ("Administrator", "Sales Manager"):
             if visit.sales_person != frappe.session.user:
                 frappe.throw("Only the assigned sales person can start this visit")
         
+        # Convert ISO format to Frappe datetime format
+        if travel_start_time and 'T' in travel_start_time:
+           formatted_travel_start_time = format_datetime(travel_start_time)
+        print("formatted_travel_start_time", formatted_travel_start_time)
         visit.status = "Traveling"
-        visit.travel_start_time = travel_start_time
+        visit.travel_start_time = formatted_travel_start_time
         visit.save(ignore_permissions=True)
         return "Visit started successfully"
     except Exception as e:
@@ -200,3 +219,21 @@ def check_and_update_pending_visits():
         frappe.log_error(f"Error checking and updating pending visits: {str(e)}", "Check and Update Pending Visits Error")
         return f"Error checking and updating pending visits: {str(e)}"
     
+def format_datetime(iso_string):
+    """
+    Convert ISO format to Frappe datetime format
+    """
+    if not iso_string:
+        return iso_string
+        
+    if 'T' in iso_string:
+        # Remove timezone info if present
+        if '+' in iso_string:
+            iso_string = iso_string.split('+')[0]
+        # Convert from "2026-04-05T12:42" to "2026-04-05 12:42:00"
+        formatted_time = iso_string.replace('T', ' ')
+        # Add seconds if not present
+        if len(formatted_time.split(' ')[1]) == 5:  # HH:MM format
+            formatted_time += ':00'
+        return formatted_time
+    return iso_string
