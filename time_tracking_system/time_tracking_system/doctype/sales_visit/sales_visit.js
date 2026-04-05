@@ -11,6 +11,13 @@ frappe.ui.form.on("Sales Visit", {
 
         // add check in button
         if (frm.doc.status=="Scheduled") {
+            if (!frm.doc.travel_start_time) {
+                frm.add_custom_button("Set Travel Start Time", () => {
+                    frm.doc.travel_start_time = frappe.datetime.now_datetime();
+                    frm.dirty();
+                    frm.save();
+                });
+            }
             frm.add_custom_button("Check In", () => {
                 frm.doc.status = "In Progress";
                 get_location().then(location => {

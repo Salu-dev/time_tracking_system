@@ -7,17 +7,16 @@
  "engine": "InnoDB",
  "field_order": [
   "basic_details_section",
-  "date",
+  "customer",
   "column_break_dkgg",
+  "scheduled_date",
+  "column_break_lktl",
   "sales_person",
   "section_break_fhdx",
-  "customer",
   "address",
+  "column_break_zdbr",
   "lattitude",
   "longitude",
-  "column_break_zdbr",
-  "scheduled_date",
-  "map",
   "section_break_otxk",
   "purpose",
   "visit_details_section",
@@ -43,16 +42,11 @@
    "label": "Basic Details"
   },
   {
-   "fieldname": "date",
-   "fieldtype": "Date",
-   "label": "Date",
-   "read_only": 1
-  },
-  {
    "fieldname": "column_break_dkgg",
    "fieldtype": "Column Break"
   },
   {
+   "fetch_from": "customer.custom_assigned_sales_user",
    "fieldname": "sales_person",
    "fieldtype": "Link",
    "label": "Sales Person",
@@ -63,8 +57,10 @@
   {
    "fieldname": "customer",
    "fieldtype": "Link",
+   "in_list_view": 1,
    "label": "Customer",
-   "options": "Customer"
+   "options": "Customer",
+   "reqd": 1
   },
   {
    "fieldname": "visit_details_section",
@@ -75,7 +71,8 @@
   {
    "fieldname": "check_in",
    "fieldtype": "Datetime",
-   "label": "Check In"
+   "label": "Check In",
+   "read_only": 1
   },
   {
    "fieldname": "column_break_rwkb",
@@ -84,7 +81,8 @@
   {
    "fieldname": "check_out",
    "fieldtype": "Datetime",
-   "label": "Check out"
+   "label": "Check out",
+   "read_only": 1
   },
   {
    "fieldname": "column_break_pytq",
@@ -129,18 +127,20 @@
   },
   {
    "fieldname": "scheduled_date",
-   "fieldtype": "Date",
+   "fieldtype": "Datetime",
    "label": "Scheduled Date"
   },
   {
    "fieldname": "lattitude",
    "fieldtype": "Float",
-   "label": "Lattitude"
+   "label": "Lattitude",
+   "read_only": 1
   },
   {
    "fieldname": "longitude",
    "fieldtype": "Float",
-   "label": "Longitude"
+   "label": "Longitude",
+   "read_only": 1
   },
   {
    "fieldname": "column_break_zdbr",
@@ -154,19 +154,16 @@
    "read_only": 1
   },
   {
-   "fieldname": "map",
-   "fieldtype": "Geolocation",
-   "label": "Map"
-  },
-  {
    "fieldname": "check_in_coordinates",
    "fieldtype": "Data",
-   "label": "Check In Coordinates"
+   "label": "Check In Coordinates",
+   "read_only": 1
   },
   {
    "fieldname": "check_out_coordinates",
    "fieldtype": "Data",
-   "label": "Check Out Coordinates"
+   "label": "Check Out Coordinates",
+   "read_only": 1
   },
   {
    "fieldname": "travel_start_time",
@@ -187,12 +184,16 @@
    "fieldname": "purpose",
    "fieldtype": "Small Text",
    "label": "Purpose"
+  },
+  {
+   "fieldname": "column_break_lktl",
+   "fieldtype": "Column Break"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-04-04 22:50:29.668062",
+ "modified": "2026-04-05 09:55:46.966035",
  "modified_by": "Administrator",
  "module": "Time Tracking System",
  "name": "Sales Visit",
