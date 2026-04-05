@@ -175,7 +175,6 @@ def check_out_visit():
         return "Visit checked out successfully"
     except Exception as e:
         frappe.log_error(f"Error checking out visit: {str(e)}", "Check Out Visit Error")
-        print(f"Error checking out visit: {str(e)}")
         return f"Error checking out visit: {str(e)}"
 
 
@@ -195,7 +194,6 @@ def start_visit(visit_name,travel_start_time):
         # Convert ISO format to Frappe datetime format
         if travel_start_time and 'T' in travel_start_time:
            formatted_travel_start_time = format_datetime(travel_start_time)
-        print("formatted_travel_start_time", formatted_travel_start_time)
         visit.status = "Traveling"
         visit.travel_start_time = formatted_travel_start_time
         visit.save(ignore_permissions=True)

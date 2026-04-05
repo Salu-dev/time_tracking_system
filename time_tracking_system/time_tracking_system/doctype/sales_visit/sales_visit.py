@@ -5,7 +5,6 @@ import frappe
 from frappe.model.document import Document
 from time_tracking_system.utils import get_customer_details
 from time_tracking_system.api import get_assigned_sales_person
-from frappe.utils import get_datetime
 
 class SalesVisit(Document):
 	def before_insert(self):
