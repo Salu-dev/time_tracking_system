@@ -83,7 +83,7 @@ doctype_list_js = {"Customer" : "public/js/customer_list.js"}
 # ------------
 
 # before_install = "time_tracking_system.install.before_install"
-# after_install = "time_tracking_system.install.after_install"
+after_install = "time_tracking_system.install.after_install"
 
 # Uninstallation
 # ------------
@@ -117,9 +117,9 @@ doctype_list_js = {"Customer" : "public/js/customer_list.js"}
 # -----------
 # Permissions evaluated in scripted ways
 
-# permission_query_conditions = {
-# 	"Event": "frappe.desk.doctype.event.event.get_permission_query_conditions",
-# }
+permission_query_conditions = {
+	"Sales Visit": "time_tracking_system.time_tracking_system.doctype.sales_visit.sales_visit.set_sales_visit_permission_query_conditions",
+}
 #
 # has_permission = {
 # 	"Event": "frappe.desk.doctype.event.event.has_permission",
@@ -153,7 +153,7 @@ scheduler_events = {
 # 		"time_tracking_system.tasks.all"
 # 	],
 	"daily": [
-		"time_tracking_system.time_tracking_system.doctype.sales_visit.sales_visit.check_and_update_pending_visits"
+		# "time_tracking_system.time_tracking_system.doctype.sales_visit.sales_visit.check_and_update_pending_visits"
 	],
 # 	"hourly": [
 # 		"time_tracking_system.tasks.hourly"
@@ -247,3 +247,11 @@ scheduler_events = {
 # List of apps whose translatable strings should be excluded from this app's translations.
 # ignore_translatable_strings_from = []
 
+fixtures = [
+    {
+        "doctype": "Custom DocPerm",
+        "filters": [
+            ["parent", "=", "Sales Visit"]
+        ]
+    }
+]
